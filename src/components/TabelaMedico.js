@@ -16,6 +16,7 @@ query  {
     nome
     email
     conselho
+    registro
     id_medico
     ativo
   }
@@ -45,7 +46,8 @@ export default function TabelaMedico() {
             <TableCell>Id</TableCell>
             <TableCell align="right">Nome</TableCell>
             <TableCell align="right">Email</TableCell>
-            <TableCell align="right">Nascimento</TableCell>
+            <TableCell align="right">Registro</TableCell>
+            <TableCell align="right">Conselho</TableCell>
             <TableCell align="right">Ativo</TableCell>
           </TableRow>
         </TableHead>
@@ -55,7 +57,8 @@ export default function TabelaMedico() {
               <TableCell component="th" scope="row">{dado.id_medico}</TableCell>
               <TableCell align="right">{dado.nome}</TableCell>
               <TableCell align="right">{dado.email}</TableCell>
-              <TableCell align="right">{dado.nascimento}</TableCell>
+              <TableCell align="right">{dado.registro}</TableCell>
+              <TableCell align="right">{dado.conselho}</TableCell>
               <TableCell align="right">{dado.ativo.toString()}</TableCell>
             </TableRow>
           ))}
