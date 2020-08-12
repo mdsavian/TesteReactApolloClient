@@ -4,6 +4,29 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:4000/',
+  cache: new InMemoryCache()
+});
+
+client
+  .query({
+    query: gql`
+      query  {
+        paciente(id:1) {
+          nome
+          email
+          id_paciente
+          ativo
+        }
+      }
+    `
+  })
+  .then(result => console.log(result));
+  
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
