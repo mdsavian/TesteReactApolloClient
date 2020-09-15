@@ -1,20 +1,39 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Abas from './components/Abas';
+import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { ApolloProvider } from '@apollo/client';
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+
+const httpLink = createHttpLink({
+  uri: 'http://localhost:4000/graphql',
+});
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwicm9sZSI6IltQYWNpZW50ZV0iLCJkYXRhIjoiMjAyMC0wOS0wOFQxOTo1OTo1NC44MjFaIiwiaWF0IjoxNTk5NTk1MTk0fQ.5iqFuGhYA_tlmVBBB2CstUhTzFETMazqZTHyhWMkzQk';
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    }
+  }
+});
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/',
-  cache: new InMemoryCache()
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+  credentials: 'same-origin'
 });
+
 
 ReactDOM.render(
   <ApolloProvider client={client}>
     <React.StrictMode>
-      <Abas/>
+    <App/>
     </React.StrictMode>
   </ApolloProvider>,
   document.getElementById('root')

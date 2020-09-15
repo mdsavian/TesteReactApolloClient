@@ -11,14 +11,13 @@ import Loading from './Loading';
 import { useQuery, gql } from '@apollo/client';
 
 const queryMedicos = gql`
-query  {
-  medicos {
-    nome
-    email
-    conselho
-    registro
-    id_medico
-    ativo
+query{
+  getMedicos
+  {
+    id   
+    usuario{
+      nome
+    }
   }
 }
 `;
@@ -32,10 +31,16 @@ const useStyles = makeStyles({
 export default function TabelaMedico() {
   const classes = useStyles();
 
-  const dados = useQuery(queryMedicos).data;
+  const { loading, error, dados } = useQuery(queryMedicos);
+console.log(loading, error, dados);
 
-  if (!dados)
-    return <Loading />;
+  if (loading) return 'Loading...';
+  if (error) return `Error! ${error.message}`;  
+  
+  console.log(dados);
+
+  if (!dados?.medicos)
+    return (<Loading />);
 
   console.log("dados = ", dados.medicos);
   return (

@@ -29,36 +29,38 @@ const useStyles = makeStyles({
 });
 
 export default function TabelaPaciente() {
-  const classes = useStyles();
 
-  const dados = useQuery(queryPaciente).data;
+  return <div></div>
+  // const classes = useStyles();
 
-  if (!dados)
-    return <Loading />;
-  return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} size="small" aria-label="tabela de pacientes">
-        <TableHead>
-          <TableRow>
-            <TableCell>Id</TableCell>
-            <TableCell align="right">Nome</TableCell>
-            <TableCell align="right">Email</TableCell>
-            <TableCell align="right">Nascimento</TableCell>
-            <TableCell align="right">Ativo</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {dados.pacientes.map((dado) => (
-            <TableRow key={dado.id_paciente}>
-              <TableCell component="th" scope="row">{dado.id_paciente}</TableCell>
-              <TableCell align="right">{dado.nome}</TableCell>
-              <TableCell align="right">{dado.email}</TableCell>
-              <TableCell align="right">{dado.nascimento}</TableCell>
-              <TableCell align="right">{dado.ativo.toString()}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
+  // const dados = useQuery(queryPaciente).data;
+
+  // if (!dados)
+  //   return <Loading />;
+  // return (
+  //   <TableContainer component={Paper}>
+  //     <Table className={classes.table} size="small" aria-label="tabela de pacientes">
+  //       <TableHead>
+  //         <TableRow>
+  //           <TableCell>Id</TableCell>
+  //           <TableCell align="right">Nome</TableCell>
+  //           <TableCell align="right">Email</TableCell>
+  //           <TableCell align="right">Nascimento</TableCell>
+  //           <TableCell align="right">Ativo</TableCell>
+  //         </TableRow>
+  //       </TableHead>
+  //       <TableBody>
+  //         {dados.pacientes.map((dado) => (
+  //           <TableRow key={dado.id_paciente}>
+  //             <TableCell component="th" scope="row">{dado.id_paciente}</TableCell>
+  //             <TableCell align="right">{dado.nome}</TableCell>
+  //             <TableCell align="right">{dado.email}</TableCell>
+  //             <TableCell align="right">{dado.nascimento}</TableCell>
+  //             <TableCell align="right">{dado.ativo.toString()}</TableCell>
+  //           </TableRow>
+  //         ))}
+  //       </TableBody>
+  //     </Table>
+  //   </TableContainer>
+  // );
 }

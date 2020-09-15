@@ -53,15 +53,11 @@ export default function Abas() {
     return (
         <div className={classes.root}>
             <AppBar position="static">
-                <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-                    <Tab label="Pacientes" />
+                <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">                    
                     <Tab label="Médicos" />
                     <Tab label="Agendamentos" />
                 </Tabs>
             </AppBar>
-            <TabPanel value={value} index={0}>
-                <TabelaPaciente/>
-            </TabPanel>
             <TabPanel value={value} index={1}>
                 <TabelaMedico />
             </TabPanel>
