@@ -6,6 +6,9 @@ import * as serviceWorker from './serviceWorker';
 import { ApolloProvider } from '@apollo/client';
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { WebSocketLink } from 'apollo-link-ws';
+import { split } from 'apollo-link';
+import { getMainDefinition } from 'apollo-utilities';
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql',
@@ -23,17 +26,33 @@ const authLink = setContext((_, { headers }) => {
   }
 });
 
+const wsLink = new WebSocketLink({
+  uri: `ws://localhost:4000/graphql`,
+  options: {
+    reconnect: true
+  }
+});
+
+const link = split(
+  ({ query }) => {
+    const { kind, operation } = getMainDefinition(query);
+    return kind === 'OperationDefinition' && operation === 'subscription';
+  },
+  wsLink,
+  authLink.concat(httpLink),
+);
+
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: link,
   cache: new InMemoryCache(),
-  credentials: 'same-origin'
+  credentials: 'same-origin',
 });
 
 
 ReactDOM.render(
   <ApolloProvider client={client}>
     <React.StrictMode>
-    <App/>
+    <App client={client}/>      
     </React.StrictMode>
   </ApolloProvider>,
   document.getElementById('root')

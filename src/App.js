@@ -1,8 +1,6 @@
 import React from 'react';
-
 import './App.css';
-
-import { useQuery, gql, useSubscription } from '@apollo/client';
+import { gql } from '@apollo/client';
 
 const MEDICOS = gql`
 query getMedicos  { 
@@ -22,45 +20,34 @@ subscription novaSubscription {
     id
     patientId
     status
+    complaint
   }
-   
-  
+}  `;
+
+const subscriptionAtendimento = (client) => {
+  client.subscribe({ query: SUBSCRIPTION }).subscribe(subs => {
+    console.log(subs.data.novaSubscription);
+  })
+
 }
-  `;
-  
-function App() {
 
-  //  const { loading, error, data } = useQuery(MEDICOS);
+const queryMedicos = (client) => {
+  client.query({ query: MEDICOS }).then(medicos => {
+    console.log(medicos.data.doctors);
+  })
 
-  const { data, loading, error } = useSubscription(SUBSCRIPTION, {
-    onSubscriptionData: c => {
-      console.log(c);
-    }
-  });
-
-  
-
-
-  console.log(loading, data, error);
+}
+const styleButton = {
+  width: 100,
+  height: 100,
+  margin:"5px"
+}
+function App(props) {
 
   return (
     <div className="App">
-      <button style={{ width: 500, height: 300 }} />
-
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
+      <button style={styleButton} onClick={() => { queryMedicos(props.client) }}> Retornar Médicos</button>
+      <button style={styleButton} onClick={() => { subscriptionAtendimento(props.client) }}>Atendimento Subscription</button>
     </div>
   );
 }
